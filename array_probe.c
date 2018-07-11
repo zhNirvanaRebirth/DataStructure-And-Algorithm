@@ -68,7 +68,45 @@ void shuffle(int* brr, int length) {
 
 //计算素数
 //问题：如何计算素数，如何查找小于某个数N的素数？有什么方法，每种方法的时间复杂度？
-//TODO
+//方法1：一般方法：依次判断每个数字是否是素数
+
+void normal_prime(int n) {
+	if (n < 2) {
+		printf("there is no prime number below number 2!!");
+		return;
+	}
+	printf("the prime number below %d:\n", n);
+	int i, j;
+	int origin[n];
+	for (i = 2; i <= n; i++) {
+		origin[i] = 1;
+		for (j = 2; j <= sqrt(i); j++) {
+			if (i%j == 0){
+				origin[i] = 0;
+				break;
+			}
+		}
+	}
+	for (i = 2; i <= n; i++) {
+		if (origin[i]) printf("%d\t", i);
+	}
+	printf("\n");
+}
+
+void aishi_prime(int n){
+	if (n < 2) {
+		printf("there is no prime number below number 2!!");
+		return;
+	}
+	printf("the prime number below %d:\n", n);
+	int i, j;
+	int origin[n];
+	memset(origin, 1, sizeof(origin));
+	origin[0] = origin[1] = 0;
+	for (i = 2; i <= sqrt(n); i++) {
+		//TODO
+	}
+}
 
 
 void show_array(int* crr, int length){
@@ -94,10 +132,12 @@ int main(void) {
 	multiplication_table();
 	*/
 	
+	/*
 	int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 	shuffle(arr, 12);
 	show_array(arr, 12);
-
+	*/
+	normal_prime(100000);
 	return 0;
 }
 
