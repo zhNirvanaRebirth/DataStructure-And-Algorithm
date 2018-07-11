@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
+#include<memory.h>
 
 //去掉极值求平均分
 //问题：如果是int数据，求和可能造成数据溢出，有没有其他方式？
@@ -75,7 +76,7 @@ void normal_prime(int n) {
 		printf("there is no prime number below number 2!!");
 		return;
 	}
-	printf("the prime number below %d:\n", n);
+	printf("normal - the prime number below %d:\n", n);
 	int i, j;
 	int origin[n];
 	for (i = 2; i <= n; i++) {
@@ -92,22 +93,58 @@ void normal_prime(int n) {
 	}
 	printf("\n");
 }
-
+//方法2：埃氏筛法：从2开始选择质数，依次筛选排除掉小于N的所有该质数的倍数，外层循环只需要到根号N的位置
 void aishi_prime(int n){
 	if (n < 2) {
 		printf("there is no prime number below number 2!!");
 		return;
 	}
-	printf("the prime number below %d:\n", n);
+	printf("aishi - the prime number below %d:\n", n);
 	int i, j;
 	int origin[n];
 	memset(origin, 1, sizeof(origin));
 	origin[0] = origin[1] = 0;
 	for (i = 2; i <= sqrt(n); i++) {
-		//TODO
+		if (origin[i]) {
+			for (j = i*i; j <= n; j += i) {
+				origin[j] = 0;
+			}
+		}
 	}
+	for (i = 2; i <= n; i++) {
+		if (origin[i]) printf("%d\t", i);
+	}
+	printf("\n");
 }
+//方法3：欧拉筛法：相对于埃氏筛法的优化是，每次筛掉的数很少，比如现在的质数是2，我们仅仅需要筛掉比2大不多少的合数，因为比2大很多的合数一定可以通过比该合数小一些的质数筛掉，这样避免了每个质数都去遍历数组做筛选，做到时间复杂度是O(n)
+void oula_prime(int n) {
+	if (n < 2) {
+		printf("there is no prime number below number 2!!");
+		return;
+	}
+	printf("oula - the prime number below %d:\n", n);
+	int i, j;
+	int origin[n];
+	int prime[n];
+	int num = 0;
+	memset(origin, 1, sizeof(origin));
+	
+	for (i = 2; i <= n; i++) {
+		if (origin[i]) {
+			prime[num] = i;
+			num++;
+		}
+		for (j = 0; j < num && i*prime[j] <= n; j++) {
+			origin[i*prime[j]] = 0;
+			if (i % prime[j] == 0) break;
+		}
+	}
 
+	for (i = 0; i < num; i++) {
+		printf("%d\t", prime[i]);
+	}
+	printf("\n");
+}
 
 void show_array(int* crr, int length){
 	int i;
@@ -137,7 +174,10 @@ int main(void) {
 	shuffle(arr, 12);
 	show_array(arr, 12);
 	*/
-	normal_prime(100000);
+
+	normal_prime(25);
+	aishi_prime(25);
+	oula_prime(25);
 	return 0;
 }
 
