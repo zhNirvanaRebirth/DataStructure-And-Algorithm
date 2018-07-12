@@ -2,6 +2,7 @@
 #include<math.h>
 #include<stdlib.h>
 #include<memory.h>
+#include<time.h>
 
 //去掉极值求平均分
 //问题：如果是int数据，求和可能造成数据溢出，有没有其他方式？
